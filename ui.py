@@ -6,7 +6,7 @@ import problem
 
 configure = route_color, city_color, best_route_color = ('red', 'blue', 'green')
 canvas_size = (canvas_width, canvas_height) = (600, 480)
-window_size = (window_width, window_height) = (640, 600)
+window_size = (window_width, window_height) = (640, 620)
 landscape = problem.Landscape(map_width=10, map_cities=20)
 optimizer = algorithm.SimulatedAnnealingOptimizer()
 optimizer.load_problem(landscape)
