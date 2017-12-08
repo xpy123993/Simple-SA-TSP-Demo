@@ -20,7 +20,7 @@ https://en.wikipedia.org/wiki/Simulated_annealing in chapter 'Acceptance probabi
 def event_happen(probability): return random.randint(0, 100) < 100 * probability
 
 
-class SimulateAnnealingOptimizer:
+class SimulatedAnnealingOptimizer:
     current_problem = None
 
     def load_problem(self, target):

@@ -6,18 +6,27 @@ import problem
 
 configure = route_color, city_color, best_route_color = ('red', 'blue', 'green')
 canvas_size = (canvas_width, canvas_height) = (600, 480)
-window_size = (window_width, window_height) = (640, 580)
+window_size = (window_width, window_height) = (640, 600)
 landscape = problem.Landscape(map_width=10, map_cities=20)
-optimizer = algorithm.SimulateAnnealingOptimizer()
+optimizer = algorithm.SimulatedAnnealingOptimizer()
 optimizer.load_problem(landscape)
-solution, solution_trace = optimizer.run(temperature=50, iterations=1000)
+solution, solution_trace = optimizer.run(temperature=50, iterations=100)
 current_index = 0
 
 message_terminate = False
+status_text = None
+visit_order_label = None
 
 
 def canvas_update(canvas, width, height, solution):
     # canvas = tkinter.Canvas(main_frame)
+    trace = ''
+    for node in solution.sequence:
+        trace += str(node) + '->'
+    trace += str(solution.sequence[0])
+    visit_order_label['text'] = trace
+    status_text['text'] = 'Initial cost = ' + str(solution_trace[0].evaluate(landscape)) + ', Current cost = ' + str(
+        solution.evaluate(landscape))
     canvas.delete('all')
     scale_x = int(width / (landscape.map_width + 1))
     scale_y = int(height / (landscape.map_width + 1))
@@ -70,7 +79,7 @@ def auto_next_solution():
     canvas_update(canvas, canvas_width, canvas_height, solution)
     current_index += 1
     if current_index < len(solution_trace) and not message_terminate:
-        main_frame.after(100, lambda: auto_next_solution())
+        main_frame.after(500, lambda: auto_next_solution())
     if message_terminate:
         message_terminate = False
     progress['value'] = current_index
@@ -99,6 +108,7 @@ def stop_autoplay():
     message_terminate = True
 
 
+# compared with global
 main_frame = tkinter.Tk()
 main_frame.title('TSP Simulator ver 1.02')
 main_frame.geometry('%dx%d+0+0' % (window_size))
@@ -130,8 +140,17 @@ reset_btn.grid(row=0, column=4, padx=10)
 demonstrate_bar = tkinter.Frame(toolbox_bar)
 demonstrate_bar.grid(row=0, column=1, padx=15)
 
+label_bar = tkinter.Frame(main_frame)
+label_bar.grid(row=2, column=0)
+
+status_text = tkinter.Label(label_bar, text='ready', justify=tkinter.LEFT)
+status_text.grid(row=0)
+
+visit_order_label = tkinter.Label(label_bar, justify=tkinter.LEFT)
+visit_order_label.grid(row=1)
+
 progress = tkinter.ttk.Progressbar(demonstrate_bar, length=200)
-progress['maximum'] = 1000
+progress['maximum'] = 100
 progress.grid()
 
 next_btn = tkinter.Button(demonstrate_bar, text='Autoplay', command=lambda: auto_play())
@@ -143,5 +162,5 @@ stop_btn.grid(row=0, column=2, padx=5)
 canvas = tkinter.Canvas(main_frame, width=canvas_width, height=canvas_height)
 canvas.grid(row=1, pady=10)
 canvas.create_rectangle(0, 0, canvas_width, canvas_height, fill='white')
-canvas_update(canvas, canvas_width, canvas_height, solution)
+canvas_update(canvas, canvas_width, canvas_height, solution_trace[0])
 main_frame.mainloop()
