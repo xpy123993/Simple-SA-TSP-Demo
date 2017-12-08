@@ -106,10 +106,10 @@ def reset_solution():
     text_input_cities = input_cities.get()
 
     if not RepresentsInt(text_input_width):
-        status_text['text'] = 'ERROR: INPUT WIDTH MUST BE A INTEGER, FOUND ' + str(type(text_input_width))
+        status_text['text'] = 'ERROR: INPUT WIDTH MUST BE A INTEGER '
         return
     if not RepresentsInt(text_input_cities):
-        status_text['text'] = 'ERROR: NUMBER OF CITIES MUST BE A INTEGER, FOUND ' + str(type(text_input_cities))
+        status_text['text'] = 'ERROR: NUMBER OF CITIES MUST BE A INTEGER '
         return
 
     map_width = int(input_width.get())
