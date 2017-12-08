@@ -94,8 +94,34 @@ def auto_play():
 
 def reset_solution():
     global solution, solution_trace, landscape, optimizer, current_index
+
+    def RepresentsInt(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+
+    text_input_width = input_width.get()
+    text_input_cities = input_cities.get()
+
+    if not RepresentsInt(text_input_width):
+        status_text['text'] = 'ERROR: INPUT WIDTH MUST BE A INTEGER, FOUND ' + str(type(text_input_width))
+        return
+    if not RepresentsInt(text_input_cities):
+        status_text['text'] = 'ERROR: NUMBER OF CITIES MUST BE A INTEGER, FOUND ' + str(type(text_input_cities))
+        return
+
     map_width = int(input_width.get())
     map_cities = int(input_cities.get())
+
+    if map_width * map_width <= map_cities:
+        status_text['text'] = 'ERROR: CITIES SHOULD BE LESS THAN WIDTH*WIDTH'
+        return
+
+    if map_cities > 25:
+        status_text['text'] = 'WARNING: CITIES ARE TOO MANY (BETTER <= 25)'
+
     landscape = problem.Landscape(map_width=map_width, map_cities=map_cities)
     optimizer.load_problem(landscape)
     solution, solution_trace = optimizer.run(temperature=20, iterations=1000)

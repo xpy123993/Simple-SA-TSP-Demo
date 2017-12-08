@@ -56,6 +56,7 @@ class SimulatedAnnealingOptimizer:
 
             current_solution_stacks.append(current_solution)
 
+        print(self.current_problem.map_distance_matrix)
         print('[SAOptimizer] Iteration finished, %g%% improved from %d to %d'
               % (round((100 * (initial_solution_value - best_solution_value) / initial_solution_value), 2),
                  initial_solution_value, best_solution_value))
