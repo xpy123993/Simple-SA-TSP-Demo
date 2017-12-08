@@ -120,7 +120,8 @@ def reset_solution():
         return
 
     if map_cities > 25:
-        status_text['text'] = 'WARNING: CITIES ARE TOO MANY (BETTER <= 25)'
+        status_text['text'] = 'ERROR: CITIES ARE TOO MANY (BETTER <= 25) FOR UI'
+        return
 
     landscape = problem.Landscape(map_width=map_width, map_cities=map_cities)
     optimizer.load_problem(landscape)
